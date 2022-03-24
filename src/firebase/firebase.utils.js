@@ -3,7 +3,8 @@ import {
   getAuth,
   signInWithPopup,
   GoogleAuthProvider,
-  createUserWithEmailAndPassword
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword
 } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { getFirestore } from 'firebase/firestore';
@@ -49,5 +50,8 @@ provider.setCustomParameters({ prompt: 'select_account' });
 export const auth = getAuth();
 export const signUpWithPassword = (email, password) => {
   return createUserWithEmailAndPassword(auth, email, password);
+};
+export const signInWithPassword = (email, password) => {
+  return signInWithEmailAndPassword(auth, email, password);
 };
 export const signInWithGoogle = () => signInWithPopup(auth, provider);
