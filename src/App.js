@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import ShopPage from './pages/shop/shop.component';
-import { Route, Routes, Navigate } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { getDoc } from 'firebase/firestore';
 import { connect } from 'react-redux';
 import HomePage from './pages/homepage/homepage.component';

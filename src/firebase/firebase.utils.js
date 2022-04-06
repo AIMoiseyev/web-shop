@@ -6,7 +6,13 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword
 } from 'firebase/auth';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import {
+  doc,
+  getDoc,
+  setDoc,
+  collection,
+  writeBatch
+} from 'firebase/firestore';
 import { getFirestore } from 'firebase/firestore';
 
 const config = {
@@ -20,7 +26,7 @@ const config = {
 };
 
 const app = initializeApp(config);
-const db = getFirestore(app);
+export const db = getFirestore(app);
 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
   if (!userAuth) return;
@@ -43,6 +49,36 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
     }
   }
   return userRef;
+};
+
+export const addCollectionAndDocuments = async (
+  collectionKey,
+  objectsToAdd
+) => {
+  const batch = writeBatch(db);
+  objectsToAdd.forEach((obj) => {
+    const collectionRef = doc(collection(db, collectionKey));
+    batch.set(collectionRef, obj);
+  });
+
+  return await batch.commit();
+};
+
+export const convertedCollectionsSnapshotToMap = (collections) => {
+  const transformCollections = collections.docs.map((doc) => {
+    const { title, items } = doc.data();
+
+    return {
+      routeName: encodeURI(title.toLowerCase()),
+      id: doc.id,
+      title,
+      items
+    };
+  });
+  return transformCollections.reduce((acc, collection) => {
+    acc[collection.title.toLowerCase()] = collection;
+    return acc;
+  }, {});
 };
 
 const provider = new GoogleAuthProvider();
