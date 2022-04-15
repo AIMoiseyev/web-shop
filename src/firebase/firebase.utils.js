@@ -81,7 +81,15 @@ export const convertedCollectionsSnapshotToMap = (collections) => {
   }, {});
 };
 
-const provider = new GoogleAuthProvider();
+export const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = auth.onAuthStateChanged((userAuth) => {
+      unsubscribe();
+      resolve(userAuth);
+    }, reject);
+  });
+};
+export const provider = new GoogleAuthProvider();
 provider.setCustomParameters({ prompt: 'select_account' });
 export const auth = getAuth();
 export const signUpWithPassword = (email, password) => {
