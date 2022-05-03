@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react';
-import './App.css';
-import ShopPage from './pages/shop/shop.component';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import HomePage from './pages/homepage/homepage.component';
+import { checkUserSession } from './redux/user/user.actions';
 import Header from './components/header/header.component';
 import SignInAndSignUpComponent from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
+import HomePage from './pages/homepage/homepage.component';
 import { selectCurrentUser } from './redux/user/user.selector';
+import ShopPage from './pages/shop/shop.component';
 import Checkout from './pages/checkout/checkout.component';
-import { checkUserSession } from './redux/user/user.actions';
+
+import { GlobalStyle } from './global.styles';
 
 const App = () => {
   const currentUser = useSelector(selectCurrentUser);
@@ -19,6 +20,7 @@ const App = () => {
 
   return (
     <div>
+      <GlobalStyle />
       <Header />
       <Routes>
         <Route path="/" element={<HomePage />} />
